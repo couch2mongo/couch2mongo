@@ -1,0 +1,23 @@
+debug = true
+source_url = "http://localhost:5984"
+source_database = "animals"
+mongodb_connect_string = "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=200"
+mongodb_database = "animals"
+mongodb_collection = "animals"
+mongodb_collection_field = "type"
+
+couchdb_username = "admin"
+couchdb_password = "admin"
+
+sequence_store = "DynamoDB"  # DynamoDB, Redis or Null
+
+[redis]
+host = "localhost"
+port = 6379
+db = 0
+prefix = "couchdb2mongo"
+use_tls = false
+
+[dynamodb]
+table = "testtable"
+local_url = "http://localhost:8000"
