@@ -9,7 +9,10 @@ mongodb_collection_field = "type"
 couchdb_username = "admin"
 couchdb_password = "admin"
 
-sequence_store = "DynamoDB"  # DynamoDB, Redis or Null
+sequence_store = "Null"  # DynamoDB, Redis or Null
+
+log_format = "Json" # "Json" or "Compact"
+log_level = "Info" # "Info", "Warn", "Error", "Debug"
 
 [redis]
 host = "localhost"

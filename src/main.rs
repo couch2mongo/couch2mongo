@@ -9,7 +9,7 @@ use futures_util::StreamExt;
 use mongodb::options::ReplaceOptions;
 use std::error::Error;
 use std::fmt::Debug;
-use tracing::{debug, info, instrument, trace};
+use tracing::{debug, info, instrument};
 
 /// ChangeEventDetails is a trait that provides some helper methods for
 /// ChangeEvent.
@@ -36,16 +36,9 @@ struct Args {
 #[instrument]
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
-    // TODO(lee): JSON formatting is broken with the AWS SDK: https://github.com/awslabs/aws-sdk-rust/issues/840
-    let f = tracing_subscriber::fmt::format().compact();
-    tracing_subscriber::fmt().event_format(f).init();
-
     let args = Args::parse();
     let config_file = args.config;
 
-    info!("starting");
-
-    trace!("settings parser");
     let s = Settings::new(Some(config_file.to_string()));
     match s {
         Ok(_) => {}
@@ -55,6 +48,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
     }
 
     let unwrapped_settings = s.unwrap();
+    unwrapped_settings.configure_logging();
 
     let sequence_store = unwrapped_settings.get_sequence_store().await?;
     let mut current_sequence = sequence_store

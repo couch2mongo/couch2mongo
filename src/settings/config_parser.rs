@@ -12,11 +12,33 @@ fn default_as_true() -> bool {
     true
 }
 
+fn default_log_level() -> LogLevel {
+    LogLevel::Info
+}
+
+fn default_log_format() -> LogFormat {
+    LogFormat::Compact
+}
+
 #[derive(Debug, Deserialize)]
 pub enum SequenceStoreInterface {
     Redis,
     DynamoDB,
     Null,
+}
+
+#[derive(Debug, Deserialize)]
+pub enum LogFormat {
+    Compact,
+    Json,
+}
+
+#[derive(Debug, Deserialize)]
+pub enum LogLevel {
+    Debug,
+    Info,
+    Warn,
+    Error,
 }
 
 impl SequenceStoreInterface {
@@ -93,6 +115,12 @@ pub struct Settings {
 
     // DynamoDB Settings
     pub dynamodb: Option<DynamoDBSettings>,
+
+    #[serde(default = "default_log_format")]
+    pub log_format: LogFormat,
+
+    #[serde(default = "default_log_level")]
+    pub log_level: LogLevel,
 }
 
 impl Settings {
@@ -108,6 +136,26 @@ impl Settings {
         }
 
         config_builder.build()?.try_deserialize()
+    }
+
+    pub fn configure_logging(&self) {
+        let x = tracing_subscriber::fmt();
+
+        let y = match self.log_level {
+            LogLevel::Debug => x.with_max_level(tracing::Level::DEBUG),
+            LogLevel::Info => x.with_max_level(tracing::Level::INFO),
+            LogLevel::Warn => x.with_max_level(tracing::Level::WARN),
+            LogLevel::Error => x.with_max_level(tracing::Level::ERROR),
+        };
+
+        match self.log_format {
+            LogFormat::Compact => {
+                y.compact().init();
+            }
+            LogFormat::Json => {
+                y.json().init();
+            }
+        };
     }
 
     pub async fn get_couchdb_client(&self) -> Result<Client, Box<dyn Error>> {
