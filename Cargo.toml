@@ -6,28 +6,28 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-tokio = { version = "1.27.0", features = ["full"] }
+tokio = { version = "1.32.0", features = ["full"] }
 futures-util = "0.3.28"
-async-trait = "0.1.68"
+async-trait = "0.1.73"
 
 # CouchDB
-couch_rs = "0.9.2"
+couch_rs = "0.9.3"
 
 # MongoDB
-bson = "2.6.1"
-mongodb = "2.5.0"
+bson = "2.7.0"
+mongodb = { version = "2.7.0", features = ["aws-auth"] }
 
 # Generic JSON stuff
-serde = "1.0.163"
-serde_json = "1.0.96"
-serde_derive = "1.0.163"
+serde = "1.0.188"
+serde_json = "1.0.107"
+serde_derive = "1.0.188"
 
 # AWS
-aws-config = "0.55.2"
-aws-sdk-dynamodb = "0.27.0"
+aws-config = "0.56.1"
+aws-sdk-dynamodb = "0.32.0"
 
 # Redis
-redis = { version = "0.23.0", features = ["tokio-rustls-comp"] }
+redis = { version = "0.23.3", features = ["tokio-rustls-comp"] }
 
 # Logging
 tracing = "0.1.37"
@@ -35,7 +35,7 @@ tracing-subscriber = { version = "0.3.16", features = ["env-filter", "json"] }
 
 # Configuration
 config = "0.13.3"
-clap = { version = "4.3.0", features = ["derive"] }
+clap = { version = "4.4.6", features = ["derive"] }
 
 [dev-dependencies]
 mockall = "0.11.4"

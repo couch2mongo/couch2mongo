@@ -107,6 +107,9 @@ pub struct Settings {
     // CouchDB password
     pub couchdb_password: Option<String>,
 
+    // Optional Key for Sequence Store
+    pub sequence_store_key: Option<String>,
+
     // Sequence Store
     pub sequence_store: SequenceStoreInterface,
 
@@ -215,5 +218,11 @@ impl Settings {
                 Ok(Box::new(null))
             }
         }
+    }
+
+    pub fn get_sequence_store_key(&self) -> String {
+        self.sequence_store_key
+            .clone()
+            .unwrap_or(self.mongodb_database.clone())
     }
 }

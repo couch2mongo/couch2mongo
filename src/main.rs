@@ -52,7 +52,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     let sequence_store = unwrapped_settings.get_sequence_store().await?;
     let mut current_sequence = sequence_store
-        .get(&unwrapped_settings.mongodb_database)
+        .get(&unwrapped_settings.get_sequence_store_key())
         .await?;
 
     let db = unwrapped_settings.get_couchdb_database().await?;
@@ -69,7 +69,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
         // Always test to see if the underlying store changed beneath us
         let test_current_sequence = sequence_store
-            .get(&unwrapped_settings.mongodb_database)
+            .get(&unwrapped_settings.get_sequence_store_key())
             .await?;
 
         // compare test_current_sequence to current_sequence
@@ -140,7 +140,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
         sequence_store
             .set(
-                &unwrapped_settings.mongodb_database,
+                &unwrapped_settings.get_sequence_store_key(),
                 change_event.seq.as_str().unwrap(),
             )
             .await?;
