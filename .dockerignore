@@ -1,5 +1,7 @@
 /target
 /.idea
+/deploy
+/.github
 
 **/*.rs.bk
 *.pdb

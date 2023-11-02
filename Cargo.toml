@@ -14,8 +14,8 @@ async-trait = "0.1.73"
 couch_rs = "0.9.3"
 
 # MongoDB
-bson = "2.7.0"
-mongodb = { version = "2.7.0", features = ["aws-auth"] }
+bson = "=2.7.0"
+mongodb = { version = "=2.7.1", features = ["aws-auth"] }
 
 # Generic JSON stuff
 serde = "1.0.188"
