@@ -1,6 +1,7 @@
 use crate::seqstore::interface::SequenceStore;
 use crate::settings::config_parser::DynamoDBSettings;
 use async_trait::async_trait;
+use aws_config::BehaviorVersion;
 use aws_sdk_dynamodb::types::{
     AttributeDefinition,
     AttributeValue,
@@ -28,7 +29,7 @@ impl DynamoDB {
     /// # Returns
     /// * A DynamoDB struct
     pub async fn new(settings: &DynamoDBSettings) -> DynamoDB {
-        let shared_config = aws_config::load_from_env().await;
+        let shared_config = aws_config::load_defaults(BehaviorVersion::v2023_11_09()).await;
 
         let actual_config = match &settings.local_url {
             Some(url) => {
@@ -78,13 +79,13 @@ impl DynamoDB {
                     AttributeDefinition::builder()
                         .attribute_name("key")
                         .attribute_type(ScalarAttributeType::S)
-                        .build(),
+                        .build()?,
                 )
                 .key_schema(
                     KeySchemaElement::builder()
                         .attribute_name("key")
                         .key_type(KeyType::Hash)
-                        .build(),
+                        .build()?,
                 )
                 .billing_mode(BillingMode::PayPerRequest)
                 .send()
